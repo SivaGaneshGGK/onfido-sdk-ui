@@ -20,12 +20,18 @@ const defaultOptions = (i18n) => [{
 class DocumentSelector extends Component {
 
   getOptions = () => {
-    const {i18n, types} = this.props
+    const {i18n, documentTypes} = this.props
     const defaultDocOptions = defaultOptions(i18n)
-    const options = defaultDocOptions.filter((option) => types.indexOf(option.value) >= 0)
-
-    // If no valid options passed, default to all options
-    return (options.length === 0) ? defaultDocOptions : options
+    // If no options passed, return default options
+    if (!documentTypes || documentTypes.length === 0) return defaultDocOptions
+    
+    let newOptions = []
+    documentTypes.forEach((type) => {
+      newOptions.push(defaultDocOptions.find(opt => {
+          return opt.value === type
+        })
+    )})
+    return newOptions
   }
 
   handleSelect = (e, value) => {
