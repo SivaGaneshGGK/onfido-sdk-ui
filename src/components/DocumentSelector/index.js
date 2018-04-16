@@ -22,16 +22,10 @@ class DocumentSelector extends Component {
   getOptions = () => {
     const {i18n, documentTypes} = this.props
     const defaultDocOptions = defaultOptions(i18n)
-    // If no options passed, return default options
-    if (!documentTypes || documentTypes.length === 0) return defaultDocOptions
-    
-    let newOptions = []
-    documentTypes.forEach((type) => {
-      newOptions.push(defaultDocOptions.find(opt => {
-          return opt.value === type
-        })
-    )})
-    return newOptions
+
+    const options = defaultDocOptions.filter((option) => documentTypes[option.value])
+    // If no valid options passed, default to defaultDocOptions
+    return (options.length === 0) ? defaultDocOptions : options
   }
 
   handleSelect = (e, value) => {
