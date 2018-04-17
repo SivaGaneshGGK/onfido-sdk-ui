@@ -23,7 +23,7 @@ class DocumentSelector extends Component {
     const {i18n, documentTypes} = this.props
     const defaultDocOptions = defaultOptions(i18n)
 
-    const options = defaultDocOptions.filter((option) => documentTypes[option.value])
+    const options = defaultDocOptions.filter((option) => documentTypes && documentTypes[option.value])
     // If no valid options passed, default to defaultDocOptions
     return (options.length === 0) ? defaultDocOptions : options
   }
