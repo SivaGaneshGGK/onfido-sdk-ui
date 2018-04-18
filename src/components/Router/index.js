@@ -13,7 +13,7 @@ import { unboundActions } from '../../core'
 import { isDesktop } from '../utils'
 import { jwtExpired } from '../utils/jwt'
 import { initializeI18n } from '../../locales'
-import { getWoopraCookie, setWoopraCookie, sendError } from '../../Tracker'
+// import { getWoopraCookie, setWoopraCookie, sendError } from '../../Tracker'
 
 const history = createHistory()
 
@@ -86,16 +86,16 @@ class CrossDeviceMobileRouter extends Component {
   }
 
   setConfig = (actions) => (data) => {
-    const {token, steps, language, documentType, step, woopraCookie} = data
-    setWoopraCookie(woopraCookie)
+    const {token, steps, language, documentType, step} = data
+    //setWoopraCookie(woopraCookie)
     if (!token) {
       console.error('Desktop did not send token')
-      sendError('Desktop did not send token')
+      // sendError('Desktop did not send token')
       return this.setError()
     }
     if (jwtExpired(token)) {
       console.error('Desktop token has expired')
-      sendError(`Token has expired: ${token}`)
+      // sendError(`Token has expired: ${token}`)
       return this.setError()
     }
     this.setState({token, steps, step, loading: false})
@@ -146,8 +146,7 @@ class MainRouter extends Component {
   mobileConfig = () => {
     const {documentType, options} = this.props
     const {steps, token, language} = options
-    const woopraCookie = getWoopraCookie()
-    return {steps, token, language, documentType, step: this.state.crossDeviceInitialStep, woopraCookie}
+    return {steps, token, language, documentType, step: this.state.crossDeviceInitialStep}
   }
 
   onFlowChange = (newFlow, newStep, previousFlow, previousStep) => {

@@ -64,7 +64,7 @@ const formatOptions = ({steps, ...otherOptions}) => ({
 
 Onfido.init = (opts) => {
   console.log("onfido_sdk_version", process.env.SDK_VERSION)
-  Tracker.track()
+  // Tracker.track()
   const options = formatOptions({ ...defaults, ...opts, events })
   bindOnComplete(options)
 

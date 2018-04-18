@@ -97,7 +97,6 @@
     "pdfobject": "2.0.201604172",
     "preact": "^8.2.6",
     "preact-compat": "3.16.0",
-    "raven-js": "3.9.1",
     "react": "15.4.2",
     "react-dom": "15.4.2",
     "react-dropzone": "3.4.0",
@@ -111,7 +110,6 @@
     "socket.io-client": "^2.0.4",
     "supports-webp": "1.0.3",
     "url-search-params": "^0.10.0",
-    "visibilityjs": "1.2.4",
-    "wpt": "https://github.com/onfido/js-client-tracker/tarball/master"
+    "visibilityjs": "1.2.4"
   }
 }
