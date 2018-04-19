@@ -3,13 +3,6 @@
 *.log
 build
 node_modules
-lib
 es
-/dist/style.css.map
-/dist/onfido.min.js.map
-/dist/index.html
-/dist/images
 test/tmp
 monster_rsa
-/dist/onfido.crossDevice.min.js
-/dist/onfido.crossDevice.min.js.map

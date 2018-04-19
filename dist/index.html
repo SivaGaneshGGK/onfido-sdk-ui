@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Onfido SDK Demo</title><meta name="viewport" content="width=device-width,minimal-ui"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500" rel="stylesheet"><style type="text/css">html, body {
+        height: 100%;
+        margin: 0;
+      }
+      body, button {
+        -webkit-font-smoothing: antialiased;
+      }
+      @media (min-width: 480px) {
+        #onfido-mount {
+          position: relative;
+          top: 10%;
+        }
+        .onfido-sdk-ui-Modal-inner {
+          font-family: "Open Sans", sans-serif !important;
+        }
+      }</style><link href="https://s3-eu-west-1.amazonaws.com/onfido-assets-production/web-sdk-releases/2.2.0/style.css" rel="stylesheet"></head><body><div id="onfido-mount"></div><button id="onfido-button" disabled="disabled">Verify identity</button><script type="text/javascript">var options = window.location.search.slice(1)
+                    .split('&')
+                    .reduce(function _reduce (/*Object*/ a, /*String*/ b) {
+                      b = b.split('=');
+                      a[b[0]] = decodeURIComponent(b[1]);
+                      return a;
+                    }, {});
+      var useModal = options.useModal === "true"
+      if (!useModal){
+        document.getElementById("onfido-button").style.visibility = "hidden";
+      }
+
+      window.onload = function() {
+        if (options.async === "false") {
+          getToken(createSDK)
+        }
+        else if (options.link_id)
+          window.onfidoOut = Onfido.init({mobileFlow: true})
+        else {
+          createSDK(null)
+          getToken(injectToken)
+        }
+      }
+
+      var steps = [
+        'welcome',
+        {
+          type:'document',
+          options:{
+            useWebcam: options.useWebcam === "true"
+          }
+        },
+        'face',
+        'complete'
+      ]
+
+      var language = options.language === "customTranslations" ? {
+        locale: 'fr',
+        phrases: {'welcome.title': 'Ouvrez votre nouveau compte bancaire'}
+      } : options.language
+
+      var createSDK = function(token) {
+        window.onfidoOut = Onfido.init({
+          token: token,
+          useModal: useModal,
+          buttonId: 'onfido-button',
+          onComplete: function() {
+            /*callback for when */ console.log("everything is complete")
+          },
+          language: language,
+          steps: steps
+        })
+      }
+
+      var injectToken = function(token) {
+        window.onfidoOut.setOptions({token: token})
+      }
+
+      var getToken = function(onSuccess) {
+        var url = 'https://token-factory.onfido.com/sdk_token'
+        var request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400) {
+            var data = JSON.parse(request.responseText)
+            // Only log the applicant ID in development - it is sensitive data
+            console.log("Applicant ID: " + data.applicant_id)
+            onSuccess(data.message)
+          }
+        }
+        request.send()
+      }</script><script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/onfido-assets-production/web-sdk-releases/2.2.0/onfido.min.js"></script></body></html>
